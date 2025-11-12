@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio Eventos del Ratón</title>
+  <style>
+    body {
+      height: 1500px; 
+    }
+    #infoRaton {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      background: lightgray;
+      border: 1px solid black;
+      padding: 5px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ejemplo de evento mousemove</h1>
+  <p>Mueve el ratón por la página y observa cómo cambian las coordenadas.</p>
+
+  <p id="infoRaton">Mueve el ratón para ver las coordenadas...</p>
+
+  <script>
+    document.body.addEventListener("mousemove", function(event) {
+
+
+      let texto = `
+        <strong>Posición respecto al navegador:</strong> X=${event.clientX}, Y=${event.clientY}<br>
+        <strong>Posición respecto a la página:</strong> X=${event.pageX}, Y=${event.pageY}`;
+
+      document.getElementById("infoRaton").innerHTML = texto;
+    });
+  </script>
+
+</body>
+</html>

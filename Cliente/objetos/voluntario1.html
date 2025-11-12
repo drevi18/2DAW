@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div data-widget-name="menu">Elige el genero</div>
+
+    <script>
+      // Seleccionamos el elemento <div>
+      const div = document.querySelector('div');
+
+      // Obtenemos el valor del atributo data-widget-name
+      const widgetName = div.getAttribute('data-widget-name');
+
+      // Mostramos el valor en consola
+      console.log(widgetName); // "menu"
+    </script>
+
+    <!-- 
+      Explicación:
+      - document.querySelector('div') selecciona el primer elemento <div> del documento.
+      - getAttribute('data-widget-name') obtiene el valor del atributo data-widget-name del elemento.
+      - console.log() muestra el valor obtenido en la consola del navegador.
+    -->
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script defer>
+
+        // ejercicio 1 
+
+        window.onload = function() {
+            
+            class alumno{
+                constructor(nombre,ingles,prog,html){
+                    this.nombre = nombre;
+                    this.ingles = ingles;
+                    this.prog = prog;
+                    this.html = html;
+                }
+                
+                infoalu(){
+                    let media = (this.ingles+ this.prog+ this.html)/3;
+                    console.log("El alumno " + this.nombre + " tiene de media " + media);
+                }
+            }
+            
+            let alu1 = new alumno("Athal",9,6,9);
+            
+            alu1.infoalu();
+            
+            //ejercicio 2
+
+            class objeto{
+                constructor(precio,desc){
+                    this.precio = precio;
+                    this.desc =desc ;
+                }
+
+                neto(){
+                    let descuentoprec =this.precio * this.desc / 100 ;
+                    let totalprecdesc= this.precio - descuentoprec;
+                    console.log("El precio final del producto es "+totalprecdesc);
+                }
+            }
+
+            document.getElementById("button").onclick = calcular;
+         
+
+            function calcular() {
+            let precio = Number(document.getElementById("precio").value);
+            let descuento = Number(document.getElementById("dsc").value);
+
+            let vestido = new objeto(precio, descuento);
+            vestido.neto();
+        }
+
+        
+        }
+    </script>
+</head>
+<body>
+
+    <form id="formulario">
+        <input type="number" name="precio" id="precio">precio <br>
+        <input type="number" name="desc" id="dsc">descuento <br>
+        <button type="button" id="button">Enviar</button>
+    </form>
+    
+</body>
+</html>

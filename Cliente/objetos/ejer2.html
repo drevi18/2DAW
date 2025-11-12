@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a name="list">the list</a>
+<ul>
+  <li><a href="http://google.com">http://google.com</a></li>
+  <li><a href="/tutorial">/tutorial.html</a></li>
+  <li><a href="local/path">local/path</a></li>
+  <li><a href="ftp://ftp.com/my.zip">ftp://ftp.com/my.zip</a></li>
+  <li><a href="http://nodejs.org">http://nodejs.org</a></li>
+  <li><a href="http://internal.com/test">http://internal.com/test</a></li>
+</ul>
+
+</body>
+<script>
+
+  let enl = document.querySelectorAll("a[href]");
+    
+  enl.forEach(a=>{
+    let href = a.getAttribute("href");
+    
+    if (href && href.includes('://') && !href.startsWith('http://internal.com')) {
+      a.style.color = 'orange';
+    }
+  });
+</script>
+</html>
+
+<!--
+  Explicación (debajo del código):
+  - document.querySelectorAll('a[href]') obtiene todos los elementos <a> que tengan href.
+  - a.getAttribute('href') lee exactamente el atributo href (sin resolver rutas relativas).
+  - Comprobamos href.includes('://') para detectar enlaces que usan un esquema (http, https, ftp, etc).
+  - Excluimos aquellos cuyo href comienza por 'http://internal.com' con href.startsWith(...).
+  - Para los enlaces que cumplen, modificamos inline style: a.style.color = 'orange'.
+-->

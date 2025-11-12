@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ejercicio Selectores Básicos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    p {
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .resaltado {
+      background-color: yellow;
+    }
+
+    /* . sirve para class y # sirve para id */
+
+    #cabecera{
+        background-color: rgb(138, 229, 252);
+        color: rgb(0, 0, 90);
+    }
+
+    #pie-de-pagina{
+        text-align: center;
+        font-size: small;
+    }
+
+  </style>
+  <body>
+    <header id="cabecera">
+      <h1>Mi sitio web</h1>
+      <nav class="menu">
+        <ul>
+          <li><a href="#">Inicio</a></li>
+          <li><a href="#">Acerca</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="contenido">
+      <h2>Bienvenidos</h2>
+      <p>Este es un párrafo de presentación.</p>
+      <p class="resaltado">Este párrafo está resaltado.</p>
+    </section>
+
+    <footer id="pie-de-pagina">
+      <p>© 2025 Mi sitio</p>
+    </footer>
+  </body>
+</html>

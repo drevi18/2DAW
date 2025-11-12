@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Números Primos</title>
+</head>
+<body>
+
+    <input type="number" id="numero">
+    <button id="enviar">Enviar</button> <br>
+    <h2>Números primos</h2>
+    <p id="añadir"></p> <br>
+    
+</body>
+
+<script>
+    let num = document.getElementById("numero");
+    let boton = document.getElementById("enviar");
+    let añadir = document.getElementById("añadir");
+
+    boton.addEventListener("click", () => {
+        let n = num.value; 
+        if (n < 2 || n === "") {
+            añadir.textContent = "Ingrese un número válido mayor o igual a 2";
+            return;
+        }
+        añadir.textContent = numPrim(n);
+    });
+
+    function numPrim(numero) {
+        let resultado = "";
+        for (let i = 2; i <= numero; i++) {
+            let esPrimo = true;
+            for (let j = 2; j < i; j++) {
+                if (i % j == 0) {
+                    esPrimo = false;
+                }
+            }
+            if (esPrimo) {
+                if (resultado === "") {
+                    resultado = i;
+                } else {
+                    resultado += ", " + i;
+                }
+            }
+        }
+        return resultado;
+    }
+</script>
+</html>

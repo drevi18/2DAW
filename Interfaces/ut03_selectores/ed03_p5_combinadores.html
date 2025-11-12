@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ejercicio Selectores Básicos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <style>
+    .contenedor p {
+      color: blue;
+    }
+
+    .contenedor > p {
+      color: red;
+    }
+
+    h1 + p {
+      font-style: italic;
+    }
+
+    h1 ~ p {
+      text-decoration: underline;
+    }
+
+    div.caja > span + p {
+      background-color: yellow;
+    }
+  </style>
+  <body>
+    <header id="cabecera">
+      <h1>Mi sitio web</h1>
+      <nav class="menu">
+        <ul>
+          <li><a href="#">Inicio</a></li>
+          <li><a href="#">Acerca</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="contenido">
+      <h2>Bienvenidos</h2>
+      <p>Este es un párrafo de presentación.</p>
+      <p class="resaltado">Este párrafo está resaltado.</p>
+    </section>
+
+    <section class="galeria">
+      <img src="img1.jpg" alt="Imagen 1" data-categoria="paisaje" />
+      <img src="img2.jpg" alt="Imagen 2" data-categoria="retrato" />
+      <img src="img3.jpg" alt="Imagen 3" data-categoria="paisaje" />
+      <img src="img4.jpg" alt="Imagen 4" />
+    </section>
+
+    <form class="busqueda">
+      <input type="text" placeholder="Buscar..." />
+      <input type="email" placeholder="Correo" />
+      <input type="submit" value="Enviar" />
+    </form>
+
+    <nav class="extra-menu">
+      <ul>
+        <li><a href="#">Item A</a></li>
+        <li><a href="#">Item B</a></li>
+        <li><a href="#">Item C</a></li>
+        <li><a href="#">Item D</a></li>
+      </ul>
+    </nav>
+
+    <ul class="lista-numerada">
+      <li>Uno</li>
+      <li>Dos</li>
+      <li>Tres</li>
+      <li>Cuatro</li>
+      <li>Cinco</li>
+    </ul>
+
+    <button class="boton">Haz clic</button>
+
+    <section class="texto-largo">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+        potenti. Donec at metus posuere, ...
+      </p>
+    </section>
+
+    <div class="contenedor">
+      <div class="caja">
+        <p>Hola</p>
+        <span>Adiós</span>
+        <p>Otro párrafo</p>
+        <div>
+          <p>Profundo</p>
+        </div>
+      </div>
+      <p>Fuera de caja</p>
+    </div>
+
+    <h1>Título principal</h1>
+    <p>Parrafo justo después del h1</p>
+    <p>Otro párrafo</p>
+
+    <footer id="pie-de-pagina">
+      <p>© 2025 Mi sitio</p>
+    </footer>
+  </body>
+</html>

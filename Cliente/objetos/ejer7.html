@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversor Morse</title>
+</head>
+<body>
+  <h2>Frase transformada:</h2>
+  <h3 id="fraseNueva"></h3>
+
+  <script>
+    let pal = window.prompt("Introduce la palabra que quieres convertir");
+    let palabra = pal.trim();
+    let comprobar = palabra.charAt(0);
+
+    const abecedario = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+    const morse = [".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."];
+
+    let palabraNueva = "";
+    let espacio = " ";
+    let resultado = "";
+
+    if (comprobar == "." || comprobar == "-") {
+      resultado = CambiaraLetras(palabra);
+    } else {
+      resultado = CambiaraMorse(palabra);
+    }
+
+    document.getElementById("fraseNueva").textContent = resultado;
+
+    function CambiaraLetras(palabra) {
+        let letrasMorse = palabra.trim().split(" ");
+    
+        for (let i = 0; i < letrasMorse.length; i++) {
+
+            if (letrasMorse[i] === espacio) {
+                palabraNueva += "  "; 
+
+            } else {
+                for (let j = 0; j < morse.length; j++) {
+                    if (letrasMorse[i] === morse[j]) {
+                    palabraNueva += abecedario[j];
+
+                    }
+                }
+            }
+        }
+
+    return palabraNueva;
+    }
+
+
+    function CambiaraMorse(palabra) {
+        let arrayPalabra = palabra.trim().toUpperCase().split("");
+    
+        for (let j = 0; j < arrayPalabra.length; j++) {
+
+            if (arrayPalabra[j] === espacio) {
+            palabraNueva += "  ";
+
+            } else {
+                for (let z = 0; z < abecedario.length; z++) {
+                    if (abecedario[z] === arrayPalabra[j]) {
+                    palabraNueva += morse[z] + espacio
+
+                    }
+                }
+            }
+        }
+
+        return palabraNueva.trim();
+    }
+  </script>
+</body>
+</html>
