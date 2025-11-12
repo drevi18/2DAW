@@ -67,18 +67,21 @@ session_start();
             </div>
             <div id="Recordar">
                 <h2>Recordar</h2> 
-                <input type="checkbox">
+                <input type="checkbox" name="recordar">
             </div>
         <button type="submit" name="enviar">Envia!</button>
         </form>
+        
     </div>
     
     <?php 
-    if ($_SESSION["incorrecto"] == true) {
-        echo "<h1 id ='incorrecto'> Este usuario o esta contraseña estan incompletos, intentalo de nuevo</h1>";
+    if (isset($_SESSION["incorrecto"])) {
+        if ($_SESSION["incorrecto"] == true) {
+            echo "<h1 id ='incorrecto'> Este usuario o esta contraseña estan incompletos, intentalo de nuevo</h1>";
+        }
+        
+        unset($_SESSION["incorrecto"]);
     }
-
-    unset($_SESSION["incorrecto"]);
     ?>
 </body>
 

@@ -19,7 +19,8 @@ $usuarios=[ ['usuario'=>'estefania','password'=>'1111', 'nombre'=>'Estefania Mae
 
 $user = $_POST["usuario"];  
 $contra = $_POST["contraseña"];
-$encontrado = false;
+$recordar = $_POST["recordar"];
+$_SESSION["id_recordar"] = $_POST["recordar"];
 $contador = 0;
 $i = 0;
 
@@ -43,7 +44,9 @@ if ($encontrado == true) {
     $_SESSION["id_rol"] = $usuarios[$i]["rol"];
     $_SESSION["id_nombre"] = $usuarios[$i]["nombre"];
     header("Location: ./menu.php");
-
+    if (isset($_SESSION["id_recordar"])) {
+        setcookie("recordar",$_SESSION["id_user"], time()+5);
+    }
 
 }else {
     header("Location: ./aules.php");
