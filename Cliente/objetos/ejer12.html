@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let titulo = "TAREA 03";
+    let form = document.createElement("form");
+    let nombre = "";
+    let dia = 0;
+    let mes =0;
+    let anyo = 0;
+
+
+    tit(titulo);
+    formulario(form);
+    
+    
+    
+    
+    
+    
+    function tit(titulo) {
+        let h1 = document.createElement ("h1");
+        h1.textContent= titulo;
+        document.body.appendChild(h1);
+    }
+    
+    function formulario(form){
+        let br = document.createElement("br");
+        
+        document.body.appendChild(form);
+        
+        let input1 = document.createElement("input");
+        input1.type= "text";
+        input1.name = "usuario";
+        input1.placeholder = "Escribe tu nombre";
+        form.appendChild(input1);
+        form.appendChild(br);
+        
+        let input2 = document.createElement("input");
+        input2.type = "number";
+        input2.name = "dia";
+        input2.placeholder = "Introduce tu día de nacimiento";
+        form.appendChild(input2);
+
+        let input3 = document.createElement("input");
+        input3.type ="number";
+        input3.name ="mes";
+        input3.placeholder ="Escribe tu mes de nacimiento";
+        form.appendChild(input3);
+
+        let br2 = document.createElement("br");
+
+        let input4 = document.createElement("input");
+        input4.type ="number";
+        input4.name ="anyo";
+        input4.placeholder ="Escribe tu año de nacimiento";
+        form.appendChild(input4);
+        form.appendChild(br2);
+
+        let boton = document.createElement("button");
+        boton.type ="submit";
+        boton.name = "boton";
+        boton.value = "enviar";
+        boton.textContent = "enviar"
+        form.appendChild(boton);
+
+        form.addEventListener("submit",function(event){
+            event.preventDefault();
+
+            nombre =form.elements["usuario"].value;
+            dia = parseInt(form.elements["dia"].value);
+            mes = parseInt(form.elements["mes"].value);
+            anyo = parseInt(form.elements["anyo"].value);
+
+            mostrar(nombre,dia,mes,anyo);
+
+        });
+
+    }
+
+    function mostrar(nombre,dia,mes,anyo){
+        let viejo = document.getElementById("resultado");
+        if (viejo) viejo.remove();
+
+        let div = document.createElement("div");
+        div.id = "resultado";
+
+        function addLinea(texto) {
+            let p = document.createElement("p");
+            p.textContent = texto;
+            div.appendChild(p);
+        }
+
+        addLinea(`Buenos días ${nombre}`);
+
+        addLinea(`Tu nombre tiene ${nombre.length} caracteres, incluidos espacios.`);
+
+        let primeraA = nombre.toLowerCase().indexOf("a");
+        let ultimaA = nombre.toLowerCase().lastIndexOf("a");
+        addLinea(`La primera letra A de tu nombre está en la posición: ${primeraA !== -1 ? primeraA + 1 : "no hay A"}`);
+        addLinea(`La última letra A de tu nombre está en la posición: ${ultimaA !== -1 ? ultimaA + 1 : "no hay A"}`);
+    }
+</script>
+</html>

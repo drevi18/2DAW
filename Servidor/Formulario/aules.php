@@ -62,7 +62,7 @@ session_start();
         <h1>Login</h1>
         <form action="login.php" method="post">
             <div id="rellenar">
-                <input type="text" placeholder="Username" name = "usuario"><br>
+                <input type="text" placeholder="Username" name = "usuario" <?php ?>><br>
                 <input type="text" placeholder="Contraseña" name="contraseña"><br>
             </div>
             <div id="Recordar">
