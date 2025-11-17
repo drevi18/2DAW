@@ -86,26 +86,61 @@
     }
 
     function mostrar(nombre,dia,mes,anyo){
-        let viejo = document.getElementById("resultado");
-        if (viejo) viejo.remove();
+    let viejo = document.getElementById("resultado");
+    if (viejo) viejo.remove();
 
-        let div = document.createElement("div");
-        div.id = "resultado";
+    let div = document.createElement("div");
+    div.id = "resultado";
 
-        function addLinea(texto) {
-            let p = document.createElement("p");
-            p.textContent = texto;
-            div.appendChild(p);
-        }
-
-        addLinea(`Buenos días ${nombre}`);
-
-        addLinea(`Tu nombre tiene ${nombre.length} caracteres, incluidos espacios.`);
-
-        let primeraA = nombre.toLowerCase().indexOf("a");
-        let ultimaA = nombre.toLowerCase().lastIndexOf("a");
-        addLinea(`La primera letra A de tu nombre está en la posición: ${primeraA !== -1 ? primeraA + 1 : "no hay A"}`);
-        addLinea(`La última letra A de tu nombre está en la posición: ${ultimaA !== -1 ? ultimaA + 1 : "no hay A"}`);
+    function addLinea(texto) {
+        let p = document.createElement("p");
+        p.textContent = texto;
+        div.appendChild(p);
     }
+
+    addLinea(`Buenos días ${nombre}`);
+
+    addLinea(`Tu nombre tiene ${nombre.length} caracteres, incluidos espacios.`);
+
+    let primeraA = nombre.toLowerCase().indexOf("a");
+    let textoPrimeraA = (primeraA !== -1) ? primeraA + 1 : "no hay A";
+
+    let ultimaA = nombre.toLowerCase().lastIndexOf("a");
+    let textoUltimaA = (ultimaA !== -1) ? ultimaA + 1 : "no hay A";
+
+    addLinea(`La primera letra A de tu nombre está en la posición: ${textoPrimeraA}`);
+    addLinea(`La última letra A de tu nombre está en la posición: ${textoUltimaA}`);
+
+    let nombreMenosTres = nombre.substring(3);
+    addLinea(`Tu nombre menos las 3 primeras letras es: ${nombreMenosTres}`);
+
+    let nombreMayus = nombre.toUpperCase();
+    addLinea(`Tu nombre todo en mayúsculas es: ${nombreMayus}`);
+
+    let hoy = new Date();
+    let edad = hoy.getFullYear() - anyo;
+    let mesActual = hoy.getMonth() + 1;
+    let diaActual = hoy.getDate();
+
+    if (mesActual < mes || (mesActual === mes && diaActual < dia)) {
+        edad--;
+    }
+
+    addLinea(`Tu edad es: ${edad} años.`);
+
+    addLinea(`Naciste un feliz ${dia} del mes ${mes} del año ${anyo}.`);
+
+    let cos = Math.cos(180);
+    addLinea(`El coseno de 180 es: ${cos}`);
+
+    let mayor = Math.max(34,67,23,75,35,19);
+    addLinea(`El número mayor de (34,67,23,75,35,19) es: ${mayor}`);
+
+    let azar = Math.random();
+    addLinea(`Ejemplo de número al azar: ${azar}`);
+
+    document.body.appendChild(div);
+}
+
 </script>
 </html>

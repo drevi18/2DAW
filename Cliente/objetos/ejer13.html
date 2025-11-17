@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventana Nueva</title>
+</head>
+<body>
+
+<button onclick="abrirVentana()">Abrir ventana nueva</button>
+
+<script>
+
+function abrirVentana() {
+
+    let nueva = window.open("", "", "width=900,height=700,resizable=no");
+
+    nueva.document.write("<h3>Ejemplo de Ventana Nueva</h3>");
+
+    let urlCompleta = window.location.href;
+    let protocolo = window.location.protocol;
+    let nombreNavegador = navigator.appCodeName;
+
+    nueva.document.write("URL Completa: " + urlCompleta + "<br>");
+    nueva.document.write("Protocolo utilizado: " + protocolo + "<br>");
+    nueva.document.write("Nombre en código del navegador: " + nombreNavegador + "<br>");
+
+    let javaDisponible = navigator.javaEnabled();
+
+    if (javaDisponible) {
+        nueva.document.write("Java SI disponible en esta ventana.<br>");
+    } else {
+        nueva.document.write("Java NO disponible en esta ventana.<br>");
+    }
+
+    nueva.document.write(
+        `<iframe src="https://www.example.com" width="800" height="600"></iframe>`
+    );
+}
+
+</script>
+
+</body>
+</html>
