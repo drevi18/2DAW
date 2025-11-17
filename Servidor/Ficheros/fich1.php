@@ -10,12 +10,13 @@
     <form action="" method = "post">
         <p>DNI</p><br>
         <input type="text" name = "dni" placeholder ="DNI"><br>
-        <p>Notas VLC</p><br>
-        <input type="number" name = "VLC[]" placeholder ="nota 1er trimestre">
-        <input type="number" name = "VLC[]"placeholder ="nota 2er trimestre">
-        <input type="number" name = "VLC[]" placeholder ="nota 3er trimestre"><br>
+        <input type="text" name= "asignatura" placeholder = "Asignatura">
+        <p>Notas</p><br>
+        <input type="number" name = "media[]" placeholder ="nota 1er trimestre">
+        <input type="number" name = "media[]"placeholder ="nota 2er trimestre">
+        <input type="number" name = "media[]" placeholder ="nota 3er trimestre"><br>
         <p>Ciclo que cursa</p><br>
-        <input type="text" name="curso" placeholder="ciclo alumno">
+        <input type="submit" name = "boton" value = "enviar">
 
     </form>
 </body>
@@ -23,14 +24,50 @@
 
 
 <?php 
-$dni = $_POST["dni"];
-$arrayNotas = $_POST["VLC"];
-$curso = $_POST["curso"];
-$media = 0;
+    $media = 0;
+    $suma = 0;
+    $arrayNotas =[];
+    $encontrado = false;
+    $asignaturas = [];
+    $arrayDatos = [];
 
-foreach ($arrayNotas as $key => $value) {
-    $media += $value;
+if (isset($_POST["dni"]) && isset($_POST["asignatura"]) && isset($_POST["media"])) {
+
+    $dni = $_POST["dni"];
+    $asignatura = $_POST["asignatura"];
+    $arrayNotas = $_POST["media"];
+
+    foreach ($arrayNotas as $key => $value) {
+        $suma = $suma + $value;
+        $media = $suma / 3;
+    }
+}
+
+$fitxer = fopen("./notasalumnos.csv", "r");
+while(!feof($fitxer)){
+    $linea = trim(fgets($fitxer));
+
+    if ($linea != "") {
+        
+        $separado = explode(",",$linea);
+
+        $alumno = $separado[0];
+        $asignatura = $separado[1];
+        $nota = $separado[2];
+
+        if (!isset($arrayDatos[$asignatura])) {
+            $arrayDatos[$asignatura] = [];
+        }
+        $index = count($arrayDatos[$asignatura]);  
+        
+        $arrayDatos[$asignatura][$index]["alumno"] = $alumno;
+        $arrayDatos[$asignatura][$index]["nota"] = $nota;
+
+
+        
+    }
 }
 
 
+print_r($arrayDatos);
 ?>
