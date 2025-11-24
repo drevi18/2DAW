@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>WORDLE</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: white; 
+            color: black;
+            text-align: center;
+        }
+
+        #tableroContenedor {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr); 
+            gap: 5px;
+            width: 300px;
+            margin: 20px auto;
+        }
+
+        .fila {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .casilla {
+            width: 56px;
+            height: 56px;
+            border: 2px solid #d3d6da; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: black; 
+            background: white;
+        }
+
+        .casilla.correct {
+            background: #6aaa64; 
+            border-color: #6aaa64;
+            color: white;
+        }
+
+        .casilla.present {
+            background: #c9b458; 
+            border-color: #c9b458;
+            color: white;
+        }
+
+        .casilla.absent {
+            background: #787c7e; 
+            border-color: #787c7e;
+            color: white;
+        }
+
+        #tecladoContenedor {
+            width: 600px;
+            margin: 30px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        #tecladoContenedor button {
+            background: #d3d6da; 
+            color: black; 
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            min-width: 40px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .accion-tecla {
+            background: #787c7e !important; 
+            color: white !important;
+        }
+        
+        #tecladoContenedor button.correct {
+            background: #6aaa64 !important;
+            color: white !important;
+        }
+
+        #tecladoContenedor button.present {
+            background: #c9b458 !important;
+            color: white !important;
+        }
+
+        #tecladoContenedor button.absent {
+            background: #787c7e !important;
+            color: white !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>WORDLE REESCRITO SIMPLE (NUBES)</h1>
+
+    <div id="tableroContenedor"></div>
+
+    <div id="tecladoContenedor"></div> 
+
+</body>
+
+<script>
+    
+    const palabraSecreta = "NUBES"; 
+    const tableroContenedor = document.getElementById("tableroContenedor");
+    const tecladoContenedor = document.getElementById('tecladoContenedor');
+    const letrasAbecedario = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    
+    let intentos = 0; 
+    let palabraActual = ""; 
+    let celdasTablero = []; 
+    let filasTablero = []; 
+    
+    iniciarJuego();
+    
+    
+    
+    
+    
+    function iniciarJuego() {
+        console.log("Palabra secreta:", palabraSecreta);
+        crearEstructuraTablero();
+        crearBotonesTeclado();
+        manejarEventosClickTeclado();
+    }
+
+
+    function crearEstructuraTablero() {
+        for (let i = 0; i < 6; i++) {
+            const fila = document.createElement("div");
+            fila.classList.add("fila");
+            let celdasFila = [];
+
+            for (let j = 0; j < 5; j++) { 
+                const casilla = document.createElement("div");
+                casilla.classList.add("casilla");
+                fila.appendChild(casilla);
+                celdasFila.push(casilla);
+            }
+
+            tableroContenedor.appendChild(fila);
+            celdasTablero.push(celdasFila);
+            filasTablero.push(fila); 
+        }
+    }
+
+
+    function crearBotonesTeclado() {
+        for (let i = 0; i < letrasAbecedario.length; i++) {
+            let botonLetra = document.createElement('button');
+            botonLetra.innerText = letrasAbecedario[i];
+            botonLetra.setAttribute("data-action", letrasAbecedario[i]); 
+            tecladoContenedor.appendChild(botonLetra);
+        }
+        
+        let botonEnter = document.createElement('button');
+        botonEnter.innerText = "ENTER";
+        botonEnter.setAttribute("data-action", "ENTER");
+        botonEnter.classList.add("accion-tecla");
+        tecladoContenedor.appendChild(botonEnter);
+        
+        let botonBorrar = document.createElement('button');
+        botonBorrar.innerText = "⌫";
+        botonBorrar.setAttribute("data-action", "BORRAR");
+        botonBorrar.classList.add("accion-tecla");
+        tecladoContenedor.appendChild(botonBorrar);
+    }
+
+
+    function manejarEventosClickTeclado() {
+        tecladoContenedor.addEventListener('click', function(event) {
+            let accion = event.target.dataset?.action;
+
+            if (!accion || intentos >= 6) { 
+                return;
+            }
+
+            if (accion.length === 1 && palabraActual.length < 5) { 
+                palabraActual += accion;
+                actualizarFila();
+            } else if (accion === "ENTER") {
+                enviarPalabra(palabraActual);
+            } else if (accion === "BORRAR") {
+                palabraActual = palabraActual.slice(0, -1);
+                actualizarFila();
+            }
+        });
+    }
+
+
+    function actualizarFila() {
+        let celdasFilaActual = celdasTablero[intentos];
+        
+        for (let i = 0; i < 5; i++) { 
+            celdasFilaActual[i].textContent = palabraActual[i] || ""; 
+            if (celdasFilaActual[i].textContent) {
+                 celdasFilaActual[i].style.borderColor = "#878a8c";
+            } else {
+                 celdasFilaActual[i].style.borderColor = "#d3d6da";
+            }
+        }
+    }
+
+
+    function enviarPalabra(palabraIntento) {
+        if (palabraIntento.length < 5) {
+            alert("La palabra debe tener 5 letras");
+            return;
+        }
+        evaluarIntento(palabraIntento.toUpperCase()); 
+    }
+
+
+    function evaluarIntento(palabraIntento) {
+        const secreta = palabraSecreta.split(""); 
+        const intento = palabraIntento.split(""); 
+
+        let resultado = ["absent", "absent", "absent", "absent", "absent"];
+        let letrasRestantes = [...secreta]; 
+
+        for (let i = 0; i < 5; i++) {
+            if (intento[i] === secreta[i]) {
+                resultado[i] = "correct";
+                letrasRestantes[i] = null; 
+            }
+        }
+
+        for (let i = 0; i < 5; i++) {
+            if (resultado[i] === "correct") continue; 
+
+            let letra = intento[i];
+            let index = letrasRestantes.indexOf(letra); 
+
+            if (index !== -1) {
+                resultado[i] = "present";
+                letrasRestantes[index] = null; 
+            }
+        }
+
+        for (let i = 0; i < 5; i++) {
+            const casilla = celdasTablero[intentos][i];
+            casilla.classList.add(resultado[i]);
+
+            let tecla = [...document.querySelectorAll("#tecladoContenedor button")]
+                .find(k => k.textContent === intento[i]);
+
+            if (tecla) {
+                if (resultado[i] === "correct") {
+                    tecla.classList.remove("present", "absent");
+                    tecla.classList.add("correct");
+                } else if (resultado[i] === "present" && !tecla.classList.contains("correct")) {
+                    tecla.classList.remove("absent");
+                    tecla.classList.add("present");
+                } else if (!tecla.classList.contains("correct") && !tecla.classList.contains("present")) {
+                    tecla.classList.add("absent");
+                }
+            }
+        }
+
+        if (palabraIntento === palabraSecreta) { 
+            setTimeout(() => alert("¡Correcto! ¡Has ganado!"), 500);
+            intentos = 6; 
+            return;
+        }
+
+        intentos++; 
+        palabraActual = ""; 
+        
+        if (intentos === 6) {
+            setTimeout(() => {
+                alert("Has perdido. La palabra era: " + palabraSecreta);
+            }, 500);
+        }
+    }
+
+</script>
+
+</html>

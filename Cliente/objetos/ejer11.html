@@ -1,51 +1,290 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Números Primos</title>
+    <title>Wordle Cutre v1.1</title>
+
+    <style>
+        /* CSS AÚN MÁS SIMPLE Y PLANO */
+        body {
+            font-family: 'Courier New', monospace; 
+            background: #EEEEEE; 
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            color: #0000AA; 
+            border-bottom: 2px solid #0000AA;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* La tabla (el tablero) */
+        #board {
+            width: 300px;
+            margin: 20px auto;
+            border-collapse: collapse; 
+            border: 2px solid black; /* Borde más simple */
+        }
+
+        .tile {
+            width: 50px;
+            height: 50px;
+            border: 1px solid black; /* Borde negro simple */
+            font-size: 24px;
+            text-align: center;
+            vertical-align: middle;
+            text-transform: uppercase;
+            font-weight: bold;
+            background-color: white;
+        }
+
+        /* Colores */
+        .correcto {
+            background: #008000; 
+            color: white;
+            border-color: black;
+        }
+
+        .posicion {
+            background: #FFA500; 
+            color: black;
+            border-color: black;
+        }
+
+        .fallo {
+            background: #808080; 
+            color: white;
+            border-color: black;
+        }
+
+        /* Teclado - Ahora sí, solo CAJAS planas */
+        #keyboard {
+            width: 650px;
+            margin: 30px auto;
+            /* Eliminamos overflow: hidden porque no es necesario sin flotantes complejos */
+            display: flex; /* Usamos flex para centrar las filas, más fácil que flotar */
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .key-row {
+            display: flex;
+            justify-content: center;
+            margin: 5px;
+        }
+
+        .key {
+            background: #C0C0C0; /* Gris plano */
+            color: black;
+            border: 1px solid black; /* Borde simple y plano */
+            /* Eliminamos los "outset" que daban el efecto 3D */
+            margin: 3px;
+            padding: 8px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            min-width: 35px;
+            text-transform: uppercase;
+            box-shadow: none; /* Aseguramos que no haya sombras */
+        }
+
+        .key.big {
+            min-width: 60px;
+            padding: 8px 15px;
+        }
+        
+        /* Colores del teclado */
+        .key.correcto { background: #008000; color: white; border-color: black; }
+        .key.posicion { background: #FFA500; color: black; border-color: black; }
+        .key.fallo { background: #808080; color: white; border-color: black; }
+    </style>
 </head>
+
 <body>
 
-    <input type="number" id="numero">
-    <button id="enviar">Enviar</button> <br>
-    <h2>Números primos</h2>
-    <p id="añadir"></p> <br>
-    
+    <h1>MI PROYECTO WORDLE SIMPLE</h1>
+
+    <table id="board"></table>
+
+    <div id="keyboard"></div>
+
 </body>
 
 <script>
-    let num = document.getElementById("numero");
-    let boton = document.getElementById("enviar");
-    let añadir = document.getElementById("añadir");
+    // Configuración y variables
+    let palabras = ["perro", "lunar", "canto", "salto", "nubes", "metro", "cable", "flota", "mismo"];
+    let palabraSecreta = palabras[Math.floor(Math.random() * palabras.length)];
+    
+    console.log("Palabra secreta:", palabraSecreta); 
 
-    boton.addEventListener("click", () => {
-        let n = num.value; 
-        if (n < 2 || n === "") {
-            añadir.textContent = "Ingrese un número válido mayor o igual a 2";
+    // Elementos y control
+    let board = document.getElementById("board");
+    let teclado = document.getElementById("keyboard");
+    let intentoActual = 0;
+    let posicionActual = 0;
+    let tablero = []; 
+    
+    // Distribución del teclado
+    let distribucion = [
+        "qwertyuiop",
+        "asdfghjkl",
+        "zxcvbnm"
+    ];
+
+    // ------------------------------------
+    // 1. Montar Tablero 
+    // ------------------------------------
+    for (let i = 0; i < 6; i++) {
+        let fila = document.createElement("tr"); 
+        fila.classList.add("row");
+
+        let filaCeldas = [];
+
+        for (let j = 0; j < 5; j++) {
+            let celda = document.createElement("td"); 
+            celda.classList.add("tile");
+
+            fila.appendChild(celda);
+            filaCeldas.push(celda);
+        }
+
+        board.appendChild(fila);
+        tablero.push(filaCeldas);
+    }
+    
+    // ------------------------------------
+    // 2. Montar Teclado 
+    // ------------------------------------
+    crearTeclado();
+    
+    // ------------------------------------
+    // Funciones (Definiciones)
+    // ------------------------------------
+
+    function crearTeclado() {
+        distribucion.forEach(fila => {
+            let rowDiv = document.createElement("div");
+            rowDiv.classList.add("key-row");
+
+            fila.split("").forEach(letra => {
+                let key = document.createElement("button");
+                key.classList.add("key");
+                key.textContent = letra;
+                key.addEventListener("click", () => pulsarTecla(letra));
+                rowDiv.appendChild(key);
+            });
+
+            teclado.appendChild(rowDiv);
+        });
+
+        // ENTER y BORRAR
+        let ultima = document.createElement("div");
+        ultima.classList.add("key-row");
+
+        let enter = document.createElement("button");
+        enter.classList.add("key", "big");
+        enter.textContent = "ENTER";
+        enter.onclick = enviarPalabra; 
+
+        let borrar = document.createElement("button");
+        borrar.classList.add("key", "big");
+        borrar.textContent = "BORRAR"; 
+        borrar.onclick = borrarLetra; 
+
+        ultima.appendChild(enter);
+        ultima.appendChild(borrar);
+
+        teclado.appendChild(ultima);
+    }
+
+    function pulsarTecla(letra) {
+        if (posicionActual < 5 && intentoActual < 6) {
+            tablero[intentoActual][posicionActual].textContent = letra;
+            posicionActual++;
+        }
+    }
+
+    function borrarLetra() {
+        if (posicionActual > 0) {
+            posicionActual--;
+            tablero[intentoActual][posicionActual].textContent = "";
+        }
+    }
+
+    function enviarPalabra() {
+        if (posicionActual < 5) {
+            alert("Faltan letras, ¡tienes que poner 5!");
             return;
         }
-        añadir.textContent = numPrim(n);
-    });
 
-    function numPrim(numero) {
-        let resultado = "";
-        for (let i = 2; i <= numero; i++) {
-            let esPrimo = true;
-            for (let j = 2; j < i; j++) {
-                if (i % j == 0) {
-                    esPrimo = false;
-                }
-            }
-            if (esPrimo) {
-                if (resultado === "") {
-                    resultado = i;
-                } else {
-                    resultado += ", " + i;
-                }
+        let intento = tablero[intentoActual].map(c => c.textContent).join("");
+        evaluarIntento(intento);
+    }
+
+    function evaluarIntento(palabra) {
+        let secreta = palabraSecreta.split("");
+        let intentoArr = palabra.split("");
+
+        let resultado = new Array(5).fill("fallo");
+        let letrasRestantes = [...secreta];
+
+        // 1. CORRECTO
+        for (let i = 0; i < 5; i++) {
+            if (intentoArr[i] === secreta[i]) {
+                resultado[i] = "correcto";
+                letrasRestantes[i] = null; 
             }
         }
-        return resultado;
+
+        // 2. POSICION (Amarillo)
+        for (let i = 0; i < 5; i++) {
+            if (resultado[i] === "correcto") continue;
+
+            let letra = intentoArr[i];
+            let index = letrasRestantes.indexOf(letra);
+
+            if (index !== -1) {
+                resultado[i] = "posicion";
+                letrasRestantes[index] = null;
+            }
+        }
+
+        // 3. PINTAR
+        for (let i = 0; i < 5; i++) {
+            let celda = tablero[intentoActual][i];
+            celda.classList.add(resultado[i]);
+
+            // Teclado
+            let key = [...document.querySelectorAll(".key")]
+                .find(k => k.textContent === intentoArr[i]);
+
+            if (key) {
+                if (resultado[i] === "correcto") key.classList.add("correcto");
+                // Solo si no es ya verde
+                else if (resultado[i] === "posicion" && !key.classList.contains("correcto"))
+                    key.classList.add("posicion");
+                // Solo si no es verde ni amarillo
+                else if (!key.classList.contains("correcto") && !key.classList.contains("posicion"))
+                    key.classList.add("fallo");
+            }
+        }
+
+        // 4. ¿Gana o sigue?
+        if (palabra === palabraSecreta) {
+            setTimeout(() => alert("¡SIIII! ¡Palabra correcta!"), 500);
+            return;
+        }
+
+        intentoActual++;
+        posicionActual = 0;
+
+        if (intentoActual === 6) {
+            setTimeout(() => {
+                alert("Game Over. La palabra era: " + palabraSecreta);
+            }, 500);
+        }
     }
+
 </script>
 </html>

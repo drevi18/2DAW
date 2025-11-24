@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+
+    let sinstock = []; 
+    let constock = []; 
+
+const inventarioProductos = [
+    { nombre: "Teclado Mecánico", precioBase: 85, stock: 12, categoria: "Periféricos" },
+    { nombre: "Webcam HD", precioBase: 35, stock: 0, categoria: "Periféricos" },
+    { nombre: "Monitor Curvo 27", precioBase: 280, stock: 5, categoria: "Monitores" },
+    { nombre: "Caja ATX", precioBase: 70, stock: 20, categoria: "Componentes" },
+    { nombre: "Mouse Pad XL", precioBase: 15, stock: 0, categoria: "Accesorios" },
+    { nombre: "Tarjeta Gráfica RTX", precioBase: 950, stock: 3, categoria: "Componentes" },
+];
+
+function ordenarStock(inventarioProductos){
+    
+    inventarioProductos.forEach(element => {
+
+        if (element.stock == 0) {
+            sinstock.push(element); 
+        }else {
+            const precioConImpuesto = element.precioBase * 1.15;
+
+           element.precioFinal = precioConImpuesto;
+            delete element.stock;
+            constock.push(element);
+        }
+    });
+
+    return constock; 
+}
+
+ordenarStock(inventarioProductos);
+
+console.log("--- Productos con Stock ---");
+constock.forEach(element => {
+    console.log(element);
+});
+
+console.log("\n--- Productos sin Stock ---");
+sinstock.forEach(element => {
+    console.log(element);
+});
+
+
+</script>
+</html>

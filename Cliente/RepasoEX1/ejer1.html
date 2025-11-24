@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" id="miform">
+        <input type="text" name="nombre" id="nombre" placeholder="nombre">
+        <input type="text" name="apellido1" id="apellido1" placeholder="primer apellido">
+        <input type="text" name="apellido2" id="apellido2" placeholder="segundo apellido">
+        <button type="submit" name="enviar">Enviar</button>
+    </form>
+</body>
+
+<script>
+
+    function saludar(nombre,apellido1,apellido2){
+        console.log("Hola "+nombre+" "+apellido1+" "+apellido2);
+    }
+
+    let form = document.getElementById("miform");
+
+    form.addEventListener("submit" ,function(evento){
+        evento.preventDefault()
+        
+        let nombre = document.getElementById("nombre").value;
+        let apellido1 = document.getElementById("apellido1").value;
+        let apellido2 = document.getElementById("apellido2").value;
+    
+        saludar(nombre,apellido1,apellido2);
+    });
+
+
+
+</script>
+</html>
