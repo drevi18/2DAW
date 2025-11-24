@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" id="miform">
+        <input type="text" id="nombre" placeholder="nombre"><br>
+        <input type="text" id="nombre" placeholder="nombre"><br>
+        <input type="text" id="nombre" placeholder="nombre"><br>
+        <input type="text" id="nombre" placeholder="nombre"><br>
+        <input type="text" id="nombre" placeholder="nombre"><br>
+        <button type="submit" id="enviar">Enviar</button>
+
+    </form>
+</body>
+<script>
+ 
+
+    const form = document.getElementById("miform");
+
+    form.addEventListener("submit", function(evento){
+         evento.preventDefault()
+
+        let inputs = document.querySelectorAll("#nombre");
+        let arraynombres = Array.from(inputs).map(inputs => inputs.value);
+
+        console.log(arraynombres);
+
+    });
+
+
+</script>
+</html>

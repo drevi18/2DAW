@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" id="miform">
+        <input type="number" class="num"><br>
+        <input type="number" class="num"><br>
+        <input type="number" class="num"><br>
+        <input type="number" class="num"><br>
+        <input type="number" class="num"><br>
+        <input type="number" class="num"><br>
+        <input type="number" class="num"><br>
+        <input type="number" class="num"><br>
+        <button type="submit" id="enviar">Enviar</button>
+
+    </form>
+</body>
+<script>
+    function suma(arrayNum){
+        let sum = 0;
+        arrayNum.forEach(element => {
+            sum = sum + element;
+        });
+
+        return sum;
+
+    }
+
+    function multiplicar(arrayNum){
+        let arrayMult = arrayNum.map(arrayNum => arrayNum * 2);
+        return arrayMult;
+    }
+
+    function filtrar(arrayNum){
+        arrayNum.forEach(elemento => {
+            let arrayFiltrado = arrayNum.filter(elemento => elemento > 3);
+            
+        });
+
+        return arrayFiltrado;
+    }
+
+    const form = document.getElementById("miform");
+    form.addEventListener("submit", function(evento){
+        evento.preventDefault();
+
+        let inputs = document.querySelectorAll(".num");
+        let arrayNum = Array.from(inputs).map(inputs => Number(inputs.value));
+
+        console.log("La suma de todos los numeros = "+suma(arrayNum));
+        
+
+        console.log("Array base multiplicado por 2:");
+        let doble = multiplicar(arrayNum);
+        doble.forEach(element => {
+            console.log(element);
+        });
+
+
+        let filtrado = filtrar(arrayNum);
+        filtrado.forEach(elemento => {
+            console.log(elemento);
+        });
+    
+    });
+</script>
+</html>
