@@ -1,0 +1,29 @@
+1. Funciones básicas de cadenas
+Función	Descripción	Ejemplo
+strlen($cadena)	Devuelve la longitud de la cadena	strlen("Hola") -> 4
+strtoupper($cadena)	Convierte toda la cadena a mayúsculas	strtoupper("hola") -> "HOLA"
+strtolower($cadena)	Convierte toda la cadena a minúsculas	strtolower("HOLA") -> "hola"
+ucfirst($cadena)	Convierte la primera letra a mayúscula	ucfirst("hola") -> "Hola"
+ucwords($cadena)	Convierte la primera letra de cada palabra en mayúscula	ucwords("hola mundo") -> "Hola Mundo"
+substr($cadena, $inicio, $longitud)	Devuelve parte de la cadena	substr("hola mundo", 0, 4) -> "hola"
+str_repeat($cadena, $n)	Repite la cadena n veces	str_repeat("-", 5) -> "-----"
+str_replace($buscar, $reemplazo, $cadena)	Reemplaza texto dentro de una cadena	str_replace("mundo","PHP","Hola mundo") -> "Hola PHP"
+strpos($cadena, $buscar)	Posición de la primera aparición de $buscar	strpos("Hola mundo","mundo") -> 5
+explode($separador, $cadena)	Divide la cadena en un array usando $separador	explode(" ","Hola mundo") -> ["Hola","mundo"]
+implode($separador, $array)	Une los elementos del array en una cadena	implode("-",["Hola","Mundo"]) -> "Hola-Mundo"
+str_word_count($cadena)	Cuenta palabras de la cadena o devuelve array de palabras	str_word_count("Hola mundo") -> 2
+2. Funciones de conteo y búsqueda
+Función	Descripción	Ejemplo
+substr_count($cadena, $buscar)	Cuenta cuántas veces aparece una subcadena	substr_count("hola hola","hola") -> 2
+str_split($cadena)	Convierte cadena en array de caracteres	str_split("hola") -> ['h','o','l','a']
+preg_match($patron,$cadena)	Comprueba si un patrón regex existe en la cadena	preg_match("/[aeiou]/","hola") -> 1
+3. Funciones útiles para formatos
+Función	Descripción	Ejemplo
+number_format($numero, $decimales, $separador_decimal, $separador_miles)	Formatea número con separadores	number_format(1234567,0,",",".") -> "1.234.567"
+htmlspecialchars($cadena)	Convierte caracteres especiales en entidades HTML	htmlspecialchars("<b>hola</b>") -> "&lt;b&gt;hola&lt;/b&gt;"
+str_pad($cadena, $longitud, $relleno, $alineacion)	Rellena cadena hasta longitud	str_pad("hola",5," ",STR_PAD_RIGHT) -> "hola "
+4. Funciones de cifrado simple y transformación
+Función	Uso	Ejemplo
+ord($char)	Devuelve el código ASCII de un caracter	ord("A") -> 65
+chr($codigo)	Devuelve el caracter del código ASCII	chr(65) -> "A"
+strtr($cadena,$mapa)	Sustituye caracteres según un array de mapeo	strtr("ABCD", ["A"=>"D","B"=>"E"]) -> "DECD"

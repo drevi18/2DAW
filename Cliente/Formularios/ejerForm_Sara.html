@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Sede Electrónica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #formReg {
+            max-width: 600px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 2px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        .checkCont {
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Formulario Rápido</h2>
+
+<form action="" id="formReg" novalidate>
+    <label for="tipoDoc">Tipo de documento</label>
+    <select id="tipoDoc" placeholder="Seleccione..." required>
+        <option value="">Seleccione...</option>
+        <option value="DNI">DNI</option>
+        <option value="NIE">NIE</option>
+    </select>
+    <span class="error" id="tipoDocError"></span>
+
+    <label for="doc">Número de soporte/IDESP/IXESP</label>
+    <input type="text" id="doc" placeholder="Número de soporte" required>
+    <span class="error" id="docError"></span>
+
+    <label for="nom">Nombre</label>
+    <input type="text" id="nom" placeholder="Nombre" required>
+    <span class="error" id="nomError"></span>
+
+    <label for="apell1">Primer apellido</label>
+    <input type="text" id="apell1" placeholder="Primer apellido" required>
+    <span class="error" id="apell1Error"></span>
+
+    <label for="apell2">Segundo apellido</label>
+    <input type="text" id="apell2" placeholder="Segundo apellido">
+    
+    <label for="fechaNac">Fecha de nacimiento</label>
+    <input type="date" id="fechaNac" required>
+    <span class="error" id="fechaNacError"></span>
+
+    <label for="mail">Correo electrónico</label>
+    <input type="email" id="mail" placeholder="Correo electrónico" required>
+    <span class="error" id="mailError"></span>
+
+    <label for="tel">Teléfono móvil</label>
+    <input type="tel" id="tel" placeholder="Teléfono móvil" required>
+    <span class="error" id="telError"></span>
+
+    <label for="pass">Contraseña</label>
+    <input type="password" id="pass" placeholder="Contraseña" required>
+    <span class="error" id="passError"></span>
+
+    <label for="passConf">Repita contraseña</label>
+    <input type="password" id="passConf" placeholder="Repita contraseña" required>
+    <span class="error" id="passConfError"></span>
+
+    <div class="checkCont">
+        <input type="checkbox" id="consent" required>
+        <label for="consent">
+            *Doy mi consentimiento al tratamiento de mis datos personales
+        </label>
+        <span class="error" id="consentError"></span>
+    </div>
+
+    <button type="submit" id="enviar">Enviar</button>
+</form>
+
+<script>
+
+    let form = document.getElementById('formReg');
+
+    function validarTipoDoc(){
+        const tipo = document.getElementById('tipoDoc').value;
+        const err = document.getElementById('tipoDocError');
+        let esValido = true;
+        
+        if (!tipo) {
+            err.textContent = 'Seleccione un tipo de documento.';
+            esValido = false;
+        } else {
+            err.textContent = '';
+        }
+        return esValido;
+    }
+
+    function validarDoc(){
+        const doc = document.getElementById('doc').value.trim();
+        const tipo = document.getElementById('tipoDoc').value;
+        const err = document.getElementById('docError');
+        let esValido = true;
+        
+        if (!doc) {
+            err.textContent = 'El campo es obligatorio.';
+            esValido = false;
+        } else if (tipo === 'DNI') {
+            const regexDni = /^[0-9]{8}[A-Z]$/i;
+            if (!regexDni.test(doc)) {
+                err.textContent = 'El DNI debe tener 8 números y una letra.';
+                esValido = false;
+            } else {
+                err.textContent = '';
+            }
+        } else {
+            err.textContent = '';
+        }
+        return esValido;
+    }
+
+    function validarTxt(id, msgError){
+        const val = document.getElementById(id).value.trim();
+        const err = document.getElementById(id + 'Error');
+        let esValido = true;
+
+        if (!val) {
+            err.textContent = msgError;
+            esValido = false;
+        } else {
+            err.textContent = '';
+        }
+        return esValido;
+    }
+
+    function validarFecha(){
+        const fecha = document.getElementById('fechaNac').value;
+        const err = document.getElementById('fechaNacError');
+        let esValido = true;
+        
+        if (!fecha) {
+            err.textContent = 'Debe rellenar la fecha de nacimiento.';
+            esValido = false;
+        } else {
+            const hoy = new Date();
+            const nac = new Date(fecha);
+            let edad = hoy.getFullYear() - nac.getFullYear();
+            const m = hoy.getMonth() - nac.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) {
+                edad--;
+            }
+            
+            if (edad < 18) {
+                err.textContent = 'Debe ser mayor de edad.';
+                esValido = false;
+            } else {
+                err.textContent = '';
+            }
+        }
+        return esValido;
+    }
+
+    function validarMail(){
+        const mail = document.getElementById('mail').value.trim();
+        const err = document.getElementById('mailError');
+        const regexMail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let esValido = true;
+        
+        if (!mail) {
+            err.textContent = 'Debe rellenar el Correo electrónico.';
+            esValido = false;
+        } else if (!regexMail.test(mail)) {
+            err.textContent = 'El correo electrónico no es válido.';
+            esValido = false;
+        } else {
+            err.textContent = '';
+        }
+        return esValido;
+    }
+
+    function validarTel(){
+        const tel = document.getElementById('tel').value.trim();
+        const err = document.getElementById('telError');
+        const regexTel = /^[6789]\d{8}$|^\+\d{9,}$/;
+        let esValido = true;
+        
+        if (!tel) {
+            err.textContent = 'Debe rellenar el Teléfono móvil.';
+            esValido = false;
+        } else if (!regexTel.test(tel)) {
+            err.textContent = 'Formato de teléfono no válido.';
+            esValido = false;
+        } else {
+            err.textContent = '';
+        }
+        return esValido;
+    }
+
+    function validarPass(){
+        const pass = document.getElementById('pass').value;
+        const err = document.getElementById('passError');
+        const regexPass = /^(?=.*[0-9])(?=.*[!@#%^&*]).{12,}$/;
+        let esValido = true;
+        
+        if (!pass) {
+            err.textContent = 'Debe rellenar la contraseña.';
+            esValido = false;
+        } else if (!regexPass.test(pass)) {
+            err.textContent = 'La contraseña debe tener al menos 12 caracteres, un número y un símbolo.';
+            esValido = false;
+        } else {
+            err.textContent = '';
+        }
+        return esValido;
+    }
+
+    function validarPassConf(){
+        const pass1 = document.getElementById('pass').value;
+        const pass2 = document.getElementById('passConf').value;
+        const err = document.getElementById('passConfError');
+        let esValido = true;
+        
+        if (!validarPass()) {
+            err.textContent = '';
+            esValido = false;
+        } else if (!pass2) {
+            err.textContent = 'Debe rellenar repita contraseña.';
+            esValido = false;
+        } else if (pass1 !== pass2) {
+            err.textContent = 'Las contraseñas no coinciden.';
+            esValido = false;
+        } else {
+            err.textContent = '';
+        }
+        return esValido;
+    }
+
+    function validarConsentimiento(){
+        const consent = document.getElementById('consent').checked;
+        const err = document.getElementById('consentError');
+        let esValido = true;
+        
+        if (!consent) {
+            err.textContent = 'Debe dar su consentimiento.';
+            esValido = false;
+        } else {
+            err.textContent = '';
+        }
+        return esValido;
+    }
+
+    form.addEventListener('submit', function(evento) {
+        evento.preventDefault();
+        
+        const vTipo = validarTipoDoc();
+        const vDoc = validarDoc();
+        const vNom = validarTxt('nom', 'El campo "Nombre" es obligatorio.');
+        const vApell1 = validarTxt('apell1', 'Debe rellenar el "primer apellido".');
+        const vFecha = validarFecha();
+        const vMail = validarMail();
+        const vTel = validarTel();
+        const vPass = validarPass();
+        const vPassConf = validarPassConf();
+        const vConsent = validarConsentimiento();
+
+        if (vTipo && vDoc && vNom && vApell1 && vFecha && vMail && vTel && vPass && vPassConf && vConsent) {
+            alert('Formulario enviado correctamente!');
+            form.reset();
+        } else {
+            alert('Por favor, corrija los errores del formulario.');
+        }
+    });
+
+</script>
+</body>
+</html>
