@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestor de Tareas con JSON</title>
+</head>
+<body>
+
+  <h1>Gestor de Tareas</h1>
+
+  <input id="inputTitle" type="text" placeholder="Título de la tarea">
+  <button onclick="addTask()">Añadir</button>
+  <button onclick="exportTasks()">Exportar JSON</button>
+  <button onclick="importTasks()">Importar JSON</button>
+
+  <h2>Lista de tareas</h2>
+  <div id="taskList"></div>
+
+  <h2>JSON</h2>
+  <textarea id="jsonArea" rows="10" cols="50"></textarea>
+
+  <script>
+    class TaskManager {
+      constructor() {
+        this.tasks = [];
+      }
+
+      addTask(title) {
+        const task = {
+          id: Date.now(),
+          title: title,
+          createdAt: new Date().toISOString(),
+          completed: false
+        };
+        this.tasks.push(task);
+        renderTasks();
+      }
+
+      deleteTask(id) {
+        this.tasks = this.tasks.filter(t => t.id !== id);
+        renderTasks();
+      }
+
+      completeTask(id) {
+        const task = this.tasks.find(t => t.id === id);
+        if (task) {
+          task.completed = true;
+        }
+        renderTasks();
+      }
+
+      exportToJSON() {
+        return JSON.stringify(this.tasks, null, 2);
+      }
+
+      importFromJSON(jsonText) {
+        try {
+          const imported = JSON.parse(jsonText);
+          if (Array.isArray(imported)) {
+            this.tasks = imported;
+          } else {
+            alert("El JSON debe ser una lista de tareas.");
+          }
+        } catch (e) {
+          alert("JSON inválido.");
+        }
+        renderTasks();
+      }
+    }
+
+    const manager = new TaskManager();
+
+    function addTask() {
+      const input = document.getElementById("inputTitle");
+      const title = input.value.trim();
+      if (title !== "") {
+        manager.addTask(title);
+        input.value = "";
+      }
+    }
+
+    function exportTasks() {
+      document.getElementById("jsonArea").value = manager.exportToJSON();
+    }
+
+    function importTasks() {
+      const jsonText = document.getElementById("jsonArea").value;
+      manager.importFromJSON(jsonText);
+    }
+
+    function renderTasks() {
+      const container = document.getElementById("taskList");
+      container.innerHTML = "";
+
+      manager.tasks.forEach(task => {
+        const div = document.createElement("div");
+
+        div.innerHTML = `
+          <p>ID: ${task.id}</p>
+          <p>Título: ${task.title}</p>
+          <p>Creada: ${task.createdAt}</p>
+          <p>Completada: ${task.completed ? "Sí" : "No"}</p>
+          <button onclick="manager.completeTask(${task.id})">Completar</button>
+          <button onclick="manager.deleteTask(${task.id})">Eliminar</button>
+          <hr>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+  </script>
+
+</body>
+</html>

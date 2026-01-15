@@ -1,0 +1,21 @@
+<script>
+class Ficha{
+    constructor(nombre,vida,magia){
+        this.nombre = nombre;
+        this.vida = vida;
+        this.magia = magia ;
+    }
+
+
+}
+
+
+// hacemos copia y modificamos
+const orgJug = new Ficha("Pepe",50,100);
+let nuevJug = {...orgJug, vida: 50};
+
+// si no existe no se para el código
+let nombreMasc = nuevJug.mascota?.nombre ?? "No tiene mascota";
+
+
+</script>

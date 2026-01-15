@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="titulo"></div>
+    <div id="contenido"></div>
+</body>
+</html>
+
+<script>
+    
+    const idTitulo = document.getElementById("titulo");
+    const idContenido = document.getElementById("contenido");
+    let ultimaVisita = localStorage.getItem("ultimaVisita");
+
+
+
+
+    if (!localStorage.ultimaVisita) {
+        const h1 = document.createElement("h1");
+        h1.textContent = "Bienvenido por primera vez";
+        idTitulo.appendChild(h1);
+    }else{
+        alert("Tu ultima entrada fué"+ultimaVisita);
+    }
+
+    let fechaActual = new Date().toLocaleString();
+    localStorage.setItem("ultimaVisita", fechaActual);
+
+    const btn = document.createElement("button");
+    btn.textContent = "Ir a goole";
+    idContenido.appendChild(btn);
+
+    btn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        window.location.assign("https://google.com");
+    })
+
+
+
+
+</script>

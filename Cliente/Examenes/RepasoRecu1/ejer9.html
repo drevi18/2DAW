@@ -1,0 +1,16 @@
+<script>
+    const datos = { usuario: "Admin", d: 10, m: 2, a: 2025 };
+
+    const textDatos = JSON.stringify(datos);
+    console.log(textDatos);
+    const objetoRecuperado = JSON.parse(textDatos);
+    console.log(objetoRecuperado);
+
+    const fechaDatos = new Date(datos.a , datos.m , datos.d);
+    console.log(fechaDatos.toLocaleDateString("es-ES"));
+
+    if ( fechaDatos instanceof Date) {
+        console.log("si, es un objeto date");
+    }
+
+</script>

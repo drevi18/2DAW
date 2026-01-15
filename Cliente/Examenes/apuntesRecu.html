@@ -1,0 +1,274 @@
+<script> // 1. FUNCIONES: Declaración, Expresión y Arrow Functions
+  "use strict"; // Recomendado para evitar errores (visto en tus soluciones)
+
+  // DECLARACIÓN: Tiene "hoisting" (puedes llamarla antes de crearla)
+  function sumar(a, b) { return a + b; }
+
+  // EXPRESIÓN: No tiene hoisting. La función se guarda en una variable.
+  const restar = function(a, b) { return a - b; };
+
+  // ARROW: Sintaxis corta. Si solo hay una línea, el 'return' es implícito.
+  // IMPORTANTE: No tienen 'this' propio (usan el del contexto donde se crean).
+  // Útiles en EventListeners y Timeouts para no perder la referencia al objeto/clase.
+  const cuadrado = x => x * x; 
+  const saludar = () => console.log("Hola");
+</script>
+
+<script> // 2. PARÁMETROS: Rest (...) y Spread (...)
+  // REST: Recoge muchos argumentos y los mete en un Array. Siempre al final.
+  function miLista(primero, ...elResto) {
+    console.log(elResto); // elResto es un Array con los demás elementos
+  }
+
+  // SPREAD: "Desparrama" o expande un array en elementos sueltos.
+  const parte = [3, 4];
+  const total = [1, 2, ...parte, 5]; // [1, 2, 3, 4, 5]
+  
+  // Copia de objetos/arrays (clonado rápido para no modificar el original/referencia)
+  const original = { a: 1 };
+  const copia = { ...original, b: 2 };
+</script>
+
+<script> // 3. ARRAYS: Métodos de iteración (Imprescindibles)
+  const nums = [1, 2, 3, 4, 5];
+
+  // .map() -> Crea un nuevo array transformando cada elemento
+  const dobles = nums.map(n => n * 2); 
+
+  // .filter() -> Crea un nuevo array con los que cumplen la condición
+  const mayores = nums.filter(n => n > 3); 
+
+  // .find() -> Devuelve el PRIMER elemento que cumple la condición
+  const tres = nums.find(n => n === 3); 
+
+  // .findIndex() -> Devuelve el índice del primer elemento que cumple (visto en biblioteca.js)
+  const idx = nums.findIndex(n => n === 3);
+
+  // .splice(inicio, cuantos) -> Elimina o sustituye elementos (modifica el original)
+  if (idx !== -1) nums.splice(idx, 1); // Borra el elemento en la posición idx
+
+  // .reduce() -> Reduce todo el array a un solo valor (ej: suma)
+  // ¡Cuidado! Si el map anterior devuelve objetos, usa (acc, obj) => acc + obj.prop
+  const totalSuma = nums.reduce((acum, n) => acum + n, 0);
+
+  // .some() y .every() -> Devuelven true/false (¿alguno cumple? / ¿todos cumplen?)
+  const hayMayores = nums.some(n => n > 10);
+</script>
+
+<script> // 4. OBJETOS: "this", Desestructuración y Propiedades
+  const pc = { marca: "Asus", ram: 16 };
+
+  // DESESTRUCTURACIÓN: Con Alias (: nuevoNombre) y Valores por defecto (=)
+  const { marca: m, ram, disco = "SSD" } = pc; // m="Asus", ram=16, disco="SSD"
+
+  // DESESTRUCTURACIÓN DE ARRAYS (por posición)
+  const [oro, plata, ...resto] = ["Marcos", "Lucia", "Fran", "Sara"];
+
+  // PROPIEDADES COMPUTADAS: Usar una variable como nombre de propiedad
+  const clave = "color";
+  const coche = { [clave]: "rojo" }; // coche.color -> "rojo"
+
+  // "THIS": 
+  // En método normal: 'this' es el objeto que llama (pc).
+  // En arrow function: 'this' es el contexto exterior (donde se definió).
+  // En EventListeners de clase: usar Arrow para que 'this' siga siendo la instancia de la clase.
+</script>
+
+<script> // 5. POO: Clases y Herencia (ES6)
+  // IMPORTANTE: Las clases NO tienen hoisting (deben definirse antes de usarse).
+  class Vehiculo {
+    #idInterno; // CAMPO PRIVADO (#): Solo accesible dentro de esta clase (visto en biblioteca.js)
+    
+    constructor(nombre, id) {
+      this.nombre = nombre;
+      this.#idInterno = id;
+    }
+    arrancar() { return `${this.nombre} en marcha`; }
+  }
+
+  // HERENCIA: La clase Coche hereda de Vehiculo
+  class Coche extends Vehiculo {
+    constructor(nombre, id, modelo) {
+      super(nombre, id); // OBLIGATORIO: Llama al constructor del padre (siempre lo primero)
+      this.modelo = modelo;
+    }
+    // Polimorfismo: sobreescribir el método del padre
+    arrancar() {
+      return `${super.arrancar()} y listo para correr`;
+    }
+  }
+</script>
+
+<script> // 6. REPASO: JavaScript Specials
+  // Nullish coalescing (??): Solo actúa si el valor es null o undefined
+  let nombre = null ?? "Anónimo"; 
+
+  // Optional chaining (?.): Evita errores al leer propiedades de objetos inexistentes
+  let ciudad = usuario?.direccion?.ciudad; // Si direccion no existe, devuelve undefined
+</script>
+
+
+
+<script> // 1. INTERACCIÓN Y NÚMEROS (parseInt, parseFloat, isNaN)
+  // Interacción básica
+  alert("Mensaje"); // Solo avisa
+  const nombr = prompt("¿Tu nombre?", "Invitado"); // Pide texto (devuelve null si cancela)
+  const seguro = confirm("¿Estás seguro?"); // Devuelve true/false
+
+  // Conversión de números (Muy importante en exámenes)
+  const num1 = parseInt("10.5 px");    // 10 (Corta los decimales y letras)
+  const num2 = parseFloat("10.5 px");  // 10.5 (Mantiene decimales)
+  
+  // toFixed(n): Limita los decimales a n (visto en app.js para precios)
+  const precioFinal = (10.456).toFixed(2); // "10.46" (OJO: devuelve STRING)
+  
+  // isNaN: Comprueba si NO es un número (true si es texto/basura)
+  if (isNaN(num1)) { console.log("No es un número válido"); }
+</script>
+
+<script> // 2. TEMPORIZADORES (setTimeout y setInterval)
+  // setTimeout: Ejecuta una vez tras X milisegundos
+  const alarma = setTimeout(() => {
+    console.log("¡Tiempo cumplido!");
+  }, 2000); 
+
+  // TRUCO EXAMEN (visto en app.js): Guardar el id del timeout en un elemento del DOM
+  // elemento.dataset.timeout = alarma;
+
+  // setInterval: Ejecuta repetidamente cada X milisegundos
+  const reloj = setInterval(() => {
+    console.log("Tic-Tac");
+  }, 1000);
+
+  // Para detenerlos:
+  clearTimeout(alarma);
+  clearInterval(reloj);
+</script>
+
+<script> // 3. FECHAS (Objeto Date)
+  const ahora = new Date(); // Fecha y hora actual
+  const fechaFija = new Date(2026, 0, 15); // 15 de Enero de 2026 (Meses empiezan en 0)
+
+  // Métodos principales (Getters)
+  ahora.getFullYear(); // 2026
+  ahora.getMonth();    // 0-11 (Enero es 0)
+  ahora.getDate();     // Día del mes (1-31)
+  ahora.getDay();      // Día de la semana (0 es Domingo, 1 Lunes...)
+  ahora.getTime();     // Milisegundos desde 1970 (Timestamp)
+
+  // Formateo rápido
+  console.log(ahora.toLocaleDateString("es-ES")); // "15/01/2026"
+
+  const f1 = new Date(2026, 0, 1);
+  const f2 = new Date(2026, 0, 15);
+  const diferencia = f2 - f1; // Resultado en milisegundos
+  const dias = diferencia / (1000 * 60 * 60 * 24); // Fórmula para pasar ms a días
+</script>
+
+<script> // 4. JSON Y OBJETOS GLOBALES (JSON, instanceof)
+  const user = { id: 1, nombre: "Pepe" };
+
+  // JSON.stringify: De Objeto a Texto (Para enviar datos o guardar en LocalStorage)
+  const jsonTexto = JSON.stringify(user);
+
+  // JSON.parse: De Texto a Objeto (Para recibir datos)
+  const copiaUser = JSON.parse(jsonTexto);
+
+  // instanceof: Comprueba si un objeto pertenece a una clase
+  console.log(ahora instanceof Date); // true
+</script>
+
+
+
+<script> // 1. BOM (Browser Object Model) - Manejo del Navegador
+  // window.location: Control de la URL
+  console.log(window.location.href); // URL actual
+  // window.location.assign("https://google.com"); // Redirige a otra web
+
+  // window.history: Historial de navegación
+  // window.history.back(); // Va a la página anterior
+  
+  // window.screen: Datos de la pantalla del usuario
+  console.log(`Resolución: ${screen.width}x${screen.height}`);
+
+  // window.navigator: Datos del navegador y permisos
+  console.log(navigator.userAgent); // Información del navegador
+  console.log(navigator.language);  // Idioma (es-ES)
+</script>
+
+<script> // 2. ALMACENAMIENTO (Cookies, Local y SessionStorage)
+  // COOKIES: Se envían al servidor, tienen caducidad.
+  document.cookie = "usuario=Pepe; expires=Fri, 31 Dec 2024 23:59:59 GMT; path=/";
+
+  // LOCAL STORAGE: Datos persistentes (no se borran al cerrar el navegador).
+  localStorage.setItem("tema", "oscuro");
+  const tema = localStorage.getItem("tema");
+  localStorage.removeItem("tema"); // Borrar uno
+  localStorage.clear();            // Borrar todo
+
+  // SESSION STORAGE: Igual que Local, pero se borra al cerrar la pestaña.
+  sessionStorage.setItem("token", "12345");
+</script>
+
+<script> // 3. DOM (Document Object Model) COMPLETO
+  /* --- A. SELECCIÓN --- */
+  const elPorId = document.getElementById("ID");
+  const elPorClase = document.querySelector(".clase"); // El primero que encuentre
+  const todos = document.querySelectorAll("p");        // Lista de todos (NodeList)
+  
+  // DIFERENCIA (visto en app.js): 
+  // NodeList (querySelectorAll) SI soporta .forEach()
+  // HTMLCollection (getElementsByX) NO soporta .forEach() (hay que usar Array.from)
+
+  /* --- B. MANIPULACIÓN DE CONTENIDO Y ATRIBUTOS --- */
+  elPorId.textContent = "Solo texto";          // Seguro: no interpreta HTML
+  elPorId.innerHTML = "<b>Texto y HTML</b>";   // Crea etiquetas dentro
+  elPorId.setAttribute("src", "imagen.jpg");   // Cambiar atributos
+  elPorId.dataset.id = "100";                  // data-id="100" (Para guardar datos ocultos)
+  elPorId.style.backgroundColor = "red";       // Estilos (en camelCase)
+
+  /* --- C. GESTIÓN DE CLASES (Muy común) --- */
+  elPorId.classList.add("activa");    // Añadir
+  elPorId.classList.remove("rojo");   // Quitar
+  elPorId.classList.toggle("oculto"); // Si está la quita, si no está la pone
+  const tiene = elPorId.classList.contains("activa"); // Devuelve true/false
+
+  /* --- D. CREACIÓN Y ELIMINACIÓN (Flujo de examen) --- */
+  const nuevo = document.createElement("li"); // 1. Crear
+  nuevo.textContent = "Nuevo ítem";           // 2. Contenido
+  const padre = document.querySelector("ul"); // 3. Buscar padre
+  padre.appendChild(nuevo);                   // 4. Inyectar al final (o REUBICAR si ya existía)
+  
+  // Eliminar
+  nuevo.remove(); // Se elimina a sí mismo
+
+  /* --- E. NAVEGACIÓN POR EL ÁRBOL (Traversing) --- */
+  const miPadre = elPorId.parentElement;      // Nodo padre
+  const misHijos = padre.children;            // Lista de hijos (HTMLCollection)
+  const primerHijo = padre.firstElementChild; // Primer hijo
+  const hermanoSig = elPorId.nextElementSibling; // Siguiente hermano
+
+  /* --- F. DELEGACIÓN DE EVENTOS (Optimización) --- */
+  // En lugar de poner un evento a cada 'li', se lo pones al 'ul' (padre)
+  padre.addEventListener("click", (e) => {
+    // Comprobamos si el clic fue en un 'li'
+    if (e.target.tagName === "LI") {
+      e.target.style.color = "blue"; 
+      console.log("Clic en el texto: " + e.target.textContent);
+    }
+  });
+</script>
+
+<script> // 4. EVENTOS (Escucha, Propagación y Delegación)
+  const btn = document.querySelector("#miBtn");
+
+  // Escuchar evento
+  // IMPORTANTE: Si usas clases, usa Arrow Function para que 'this' apunte a la clase
+  btn.addEventListener("click", (event) => {
+    console.log("Clic en:", event.target); // El elemento que recibió el clic
+    event.preventDefault(); // Evita que un enlace navegue o un form se envíe
+  });
+
+  // BUBBLING (Burbujeo): El evento sube del hijo al padre.
+  // Para frenarlo: event.stopPropagation();
+</script>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+    <input type="text" class="nombre" placeholder="Nombre">
+    <input type="text" class="numero" placeholder="Numero">
+    <button id="enviar">Enviar</button>
+    <button id="mostrar">Mostrar Contactos</button>
+    <div id="resultado"></div>
+</form>
+</body>
+</html>
+
+
+
+<script>
+class Contacto {
+  constructor({ nombre, numero }) {
+    this.nombre = nombre;
+    this.numero = numero;
+  }
+
+  info() {
+    return `Nombre: ${this.nombre} - Tel: ${this.numero}`;
+  }
+}
+
+class ListaContactos {
+  #lista;
+  constructor() {
+    this.#lista = [];
+  }
+
+  sumCont(contacto) {
+    this.#lista.push(contacto);
+    console.log("Contacto añadido correctamente")
+  }
+
+  mostrar() {
+    return this.#lista.map(contacto => contacto.info());
+  }
+}
+
+const nom = document.querySelector(".nombre");
+const num = document.querySelector(".numero");
+const env = document.getElementById("enviar");
+const most = document.getElementById("mostrar");
+let resultado = document.getElementById("resultado");
+let listCont = new ListaContactos();
+
+env.addEventListener("click", (event) =>{
+    event.preventDefault();
+
+
+    let nombre = nom.value;
+    let numero = num.value;
+    if (nombre && numero) {
+        
+        let nuevoCont = new Contacto({nombre,numero});
+        listCont.sumCont(nuevoCont);
+        
+        
+        nombre.value = "";
+        numero.value = "";
+    }
+})
+
+most.addEventListener("click", (event)=> {
+    event.preventDefault();
+
+
+    resultado.innerHTML = "";
+    listCont.mostrar().forEach(element => {
+        let li = document.createElement("li");
+        li.textContent = element;
+        resultado.appendChild(li);
+    });
+
+
+})
+
+
+</script>
+
+    

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Club de Lectura Pro</title>
+</head>
+<body>
+    <input type="text" id="nombre" placeholder="nombre">
+    <input type="text" id="autor" placeholder="autor">
+    <input type="text" id="genero" placeholder="género">
+    <button class="enviar">Enviar</button>
+    
+    <div class="zona">
+        <h2>Biblioteca General</h2>
+        <ul id="listaGeneral"></ul>
+    </div>
+
+    <script>
+        "use strict";
+
+        class Libro {
+            constructor({ titulo, autor, genero }) {
+                this.titulo = titulo;
+                this.autor = autor;
+                this.genero = genero;
+            }
+            info() {
+                return "Título: " + this.titulo + " - Autor: " + this.autor + " - Género: " + this.genero;
+            }
+        }
+
+        class ClubLectura {
+            #biblioteca = [];
+            
+            agregarLibro(libro) { 
+                this.#biblioteca.push(libro); 
+            }
+            get libros() { 
+                return this.#biblioteca; 
+            }
+        }
+
+        class GestorPrestamos {
+            #prestados = [];
+            prestar(libro) {
+                this.#prestados.push(libro);
+            }
+        }
+
+        // --- INSTANCIAS ---
+        const miClub = new ClubLectura();
+        const misPrestamos = new GestorPrestamos();
+
+        // --- ELEMENTOS DEL DOM ---
+        const IDnom = document.getElementById("nombre");
+        const IDaut = document.getElementById("autor");
+        const IDgen = document.getElementById("genero");
+        const IDenviar = document.querySelector(".enviar");
+        const zonaListaGeneral = document.getElementById("listaGeneral");
+
+        // --- CREACIÓN DINÁMICA DE LA SECCIÓN DE PRESTADOS ---
+        // La creamos aquí una sola vez para que ya exista en el DOM
+        const divPrestados = document.createElement("div");
+        divPrestados.id = "contenedor-prestados";
+        divPrestados.innerHTML = "<h2>Libros Prestados (5s para alerta roja)</h2><ul id='listaPrestados'></ul>";
+        document.body.appendChild(divPrestados);
+
+        // --- EVENTO PRINCIPAL ---
+        IDenviar.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            const nombre = IDnom.value;
+            const autor = IDaut.value;
+            const genero = IDgen.value;
+
+            if (nombre && autor && genero) {
+                const nuevoLibro = new Libro({ titulo: nombre, autor: autor, genero: genero });
+                miClub.agregarLibro(nuevoLibro);
+                renderizarLista();
+
+                IDnom.value = ""; 
+                IDaut.value = ""; 
+                IDgen.value = "";
+            }
+        });
+
+        function renderizarLista() {
+            // Limpiamos la lista general para no duplicar
+            zonaListaGeneral.innerHTML = "";
+            
+            miClub.libros.forEach((libro) => {
+                const li = document.createElement("li");
+                li.textContent = libro.info() + " ";
+
+                // BOTÓN DINÁMICO "PRESTAMO"
+                const btnPrestar = document.createElement("button");
+                btnPrestar.textContent = "Préstamo";
+                
+                btnPrestar.addEventListener("click", () => {
+                    // 1. Guardar en la clase de prestados
+                    misPrestamos.prestar(libro);
+
+                    // 2. Obtener el UL de prestados (ahora seguro que existe)
+                    const listaUlPrestados = document.getElementById("listaPrestados");
+
+                    // 3. Crear el nuevo elemento visual
+                    const liPrestado = document.createElement("li");
+                    liPrestado.textContent = "PRESTADO: " + libro.titulo;
+                    listaUlPrestados.appendChild(liPrestado);
+
+                    // 4. Temporizador de 5 segundos
+                    setTimeout(() => {
+                        liPrestado.style.color = "red";
+                        liPrestado.style.fontWeight = "bold";
+                    }, 5000);
+
+                    // 5. Quitar de la lista general
+                    li.remove();
+                });
+
+                li.appendChild(btnPrestar);
+                zonaListaGeneral.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>

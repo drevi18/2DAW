@@ -1,0 +1,22 @@
+<script>
+
+    const strgEdad = prompt("Pon tu edad");
+    let confirmar;
+    if (isNaN(strgEdad)) {
+        alert("Tienes que meter un número válido")
+    }else{
+        const edad = parseInt(strgEdad);
+        if (edad < 18) {
+            confirmar = confirm("Tienes autorización paterna?");
+        }
+        if (confirmar == true || edad > 18) {
+            const mensaje = setTimeout(()=>{
+                console.log("Autorizado");
+            },3000);
+        }
+    }
+
+    
+
+
+</script>

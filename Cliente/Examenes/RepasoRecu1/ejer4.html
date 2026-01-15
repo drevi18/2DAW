@@ -1,0 +1,22 @@
+<script>
+const examen = [
+  { nombre: "Ana", nota: 8 },
+  { nombre: "Pepe", nota: 3 },
+  { nombre: "Luis", nota: 5 },
+  { nombre: "Marta", nota: 4 },
+  { nombre: "Juan", nota: 9 }
+];
+
+// 1. Filtrar (Esto lo tenías perfecto)
+const aprobados = examen.filter(alumno => alumno.nota >= 5);
+
+// 2. Reduce (Primero sumamos todo)
+const sumaTotal = aprobados.reduce((acc, alumno) => acc + alumno.nota, 0);
+
+// 3. Media (Dividimos fuera del reduce)
+const medAprob = sumaTotal / aprobados.length;
+
+console.log("Aprobados:", aprobados);
+console.log("Suma total notas:", sumaTotal);
+console.log("Media de aprobados:", medAprob);
+</script>

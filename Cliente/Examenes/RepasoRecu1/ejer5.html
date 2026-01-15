@@ -1,0 +1,37 @@
+<script>
+    class Animal{
+        constructor(nombre, edad){
+            this.nombre = nombre ;
+            this.edad = edad ;
+        }
+
+        comer(){
+            return this.nombre+" esta comiendo";
+        }
+    }
+
+    class Perro extends Animal{
+        constructor(nombre,edad,raza){
+            super(nombre,edad);
+            this.raza = raza;
+        }
+
+        ladrar(){
+            return "Guau Guau soy un "+this.raza;
+        }
+    }
+    let perro = new Perro("Toby",13,"golden");
+    console.log(perro.ladrar());
+
+    //desestructuración: 
+    const podio = ["Marcos", "Lucía", "Fran", "Sara"];
+
+    // En una sola línea sacamos todo por su posición:
+    const [oro, plata, ...resto] = podio;
+
+    console.log(oro);   // "Marcos"
+    console.log(plata); // "Lucía"
+    console.log(resto); // ["Fran", "Sara"] (El operador ... agrupa el sobrante)
+
+
+</script>

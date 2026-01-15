@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+</head>
+<body>
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="number" id="precio" placeholder="Precio">
+    <button id="enviar">Añadir Producto</button>
+
+    <h2>Lista de productos (precio ≥ 20)</h2>
+    <div id="poner"></div> 
+
+    <button id="precios">Mostrar precios duplicados</button> 
+
+    <h2>Total</h2>
+    <div id="total"></div>
+
+<script>
+class Producto {
+    constructor({nombre, precio}) {
+        this.nombre = nombre;
+        this.precio = Number(precio); // aseguramos que sea número
+    }
+
+    info() {
+        return `Nombre: ${this.nombre} Precio: ${this.precio}€`;
+    }
+}
+
+// Variables globales
+let listaProd = [];
+let arrayMod = [];
+
+const idPoner = document.getElementById("poner");
+const idNombre = document.getElementById("nombre");
+const idPrecio = document.getElementById("precio");
+const btnEnv = document.getElementById("enviar");
+const btnMostrar = document.getElementById("precios");
+const idTotal = document.getElementById("total");
+
+// Añadir productos a la lista
+btnEnv.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    let nombre = idNombre.value.trim();
+    let precio = idPrecio.value;
+
+    if (nombre && precio) {
+        let producto = new Producto({nombre, precio});
+        listaProd.push(producto);
+
+        // Limpiar inputs
+        idNombre.value = "";
+        idPrecio.value = "";
+    }
+});
+
+// Mostrar productos con precios duplicados y total
+btnMostrar.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    arrayMod = duplicarPrecios(listaProd);
+    mostrarTotal(arrayMod);
+    mostrarProductos(arrayMod);
+});
+
+// Función para duplicar precios (crea nuevos objetos)
+function duplicarPrecios(arrayProd) {
+    return arrayProd.map(p => new Producto({nombre: p.nombre, precio: p.precio * 2}));
+}
+
+// Función para mostrar productos con precio ≥ 20
+function mostrarProductos(arrayProd) {
+    idPoner.innerHTML = ''; // Limpiar lista antes de mostrar
+
+    arrayProd.forEach(element => {
+        if (element.precio >= 20) {
+            const li = document.createElement("li");
+            li.textContent = element.info();
+            idPoner.appendChild(li);
+        }
+    });
+}
+
+// Función para mostrar el total de los productos mostrados
+function mostrarTotal(arrayProd) {
+    idTotal.innerHTML = ''; // Limpiar total antes de mostrar
+    let suma = 0;
+
+    arrayProd.forEach(element => {
+        suma += element.precio;
+    });
+
+    const h3 = document.createElement("h3");
+    h3.textContent = `Total: ${suma}€`;
+    idTotal.appendChild(h3);
+}
+</script>
+</body>
+</html>
